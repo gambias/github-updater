@@ -57,6 +57,13 @@ class GitLab_API extends API {
 			Messages::instance()->create_error_message( 'gitlab' );
 		}
 		add_site_option( 'github_updater', self::$options );
+		add_action( 'send_headers', array($this, 'add_private_token_to_header') );
+	}
+	
+	function add_private_token_to_header() {
+		if ( ! empty( parent::$options['gitlab_private_token'] ) ) {
+			header( 'PRIVATE-TOKEN: ' . parent::$options['gitlab_private_token'] );
+		}
 	}
 
 	/**
